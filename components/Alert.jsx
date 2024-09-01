@@ -2,14 +2,15 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import AwesomeAlert from "react-native-awesome-alerts";
 
-const Alert = ({ alert, hideAlertHandler, message }) => {
+const Alert = ({ alert, hideAlertHandler, message, loading, tittle = 'Alert !', setAlert }) => {
+
   return (
     <AwesomeAlert
-      show={alert}
+      show={message == '100%' ? false : alert}
       showProgress={false}
-      title="Alert!"
+      title={tittle}
       closeOnTouchOutside={true}
-      message={message}
+      message={message == '100%' ? 'Uploaded' : message}
       showCancelButton={false}
       showConfirmButton={true}
       confirmText="Confirm"
@@ -23,6 +24,10 @@ const Alert = ({ alert, hideAlertHandler, message }) => {
       }}
       contentContainerStyle={{
         backgroundColor: "rgba(255, 255, 255, 0.8)",
+      }}
+      messageStyle={{
+        fontSize: 18,
+        fontWeight: "bold",
       }}
     />
   );

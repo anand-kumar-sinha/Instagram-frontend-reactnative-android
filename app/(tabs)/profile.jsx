@@ -8,7 +8,7 @@ import Animated, { useSharedValue } from "react-native-reanimated";
 const profile = () => {
   const height = useSharedValue(0);
   return (
-    <View style={{ paddingTop:10 }}>
+    <View style={{ paddingTop: 10 }}>
       <UserHeader height={height} />
       <UserData />
       <UserSetting height={height} />

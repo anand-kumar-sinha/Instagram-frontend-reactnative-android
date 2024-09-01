@@ -87,8 +87,10 @@ const login = () => {
     >
       <Alert
         alert={alert}
+        setAlert={setAlert}
         hideAlertHandler={hideAlertHandler}
         message={message}
+        loading={false}
       />
       <InstaLogo />
       <View style={{ width: "100%", padding: 20 }}>
