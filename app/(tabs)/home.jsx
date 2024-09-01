@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TopHeader from "../../components/TopHeader";
 import Post from "../../components/Post";
 import StatusBar from "../../components/StatusBar";
 import AddStatus from "../../components/AddStatus";
+import { router } from "expo-router";
 
-const index = () => {
+const home = () => {
   return (
     <ScrollView style={{ paddingTop: 15 }}>
       <TopHeader />
@@ -28,7 +29,7 @@ const index = () => {
   );
 };
 
-export default index;
+export default home;
 
 const styles = StyleSheet.create({
   ScrollViewStyle: {

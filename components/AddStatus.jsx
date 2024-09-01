@@ -1,12 +1,15 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
 
 const AddStatus = () => {
+  const user = useRecoilValue(userAtom)
   return (
     <View style={styles.imgCont}>
       <Image
-        source={{ uri: "https://reactjs.org/logo-og.png" }}
+        source={{ uri: user?.avatar }}
         style={styles.img}
       />
       <MaterialCommunityIcons

@@ -1,11 +1,14 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
+  Linking,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Alert,
 } from "react-native";
 import Greed from "../../assets/icons/Greed";
 import Reels from "../../assets/icons/Reels";
@@ -13,14 +16,33 @@ import AddStatus from "../AddStatus";
 import StatusBar from "../StatusBar";
 import Post from "./Post";
 import { router } from "expo-router";
+import { useRecoilValue } from "recoil";
+import userAtom from "../../atoms/userAtom";
 
 const UserData = () => {
   const [slider, setSlider] = useState("posts");
+  const user = useRecoilValue(userAtom);
 
+  const date = new Date(user?.createdAt);
+
+  const formateMonth = date.toDateString().split(" ")[1];
+  const formateYear = date.toDateString().split(" ")[3];
+
+  const handleRedirect = async () => {
+    const url = user?.link;
+
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
 
   return (
     <ScrollView style={styles.Maincont}>
       {/* image and followers */}
+      {console.log(user)}
       <View style={styles.firstTab}>
         <AddStatus />
         <View style={styles.dataCont}>
@@ -41,26 +63,44 @@ const UserData = () => {
 
       {/* name and bio */}
       <View style={styles.secondTab}>
-        <Text style={[styles.name, styles.userName]}>Anand kumar patel</Text>
-        <Text style={[styles.anotheruser, styles.name]}>@anand</Text>
-        <Text style={[styles.name, styles.bio]}>
+        <Text style={[styles.name, styles.userName]}>{user?.name}</Text>
+        {user?.taged && (
+          <Text style={[styles.anotheruser, styles.name]}>@{user?.taged}</Text>
+        )}
+        {user?.bio && (
+          <Text style={[styles.bio, styles.name]}>{user?.bio} </Text>
+        )}
+        <Text style={[styles.bio, styles.name]}>
           <MaterialCommunityIcons
-            name="calendar-week-begin"
-            size={18}
-            color="#777"
-          />
-          27/03/2005
+            name="calendar-month-outline"
+            size={15}
+            color="black"
+          />{" "}
+          {formateMonth} {formateYear}
         </Text>
-        <Text style={[styles.bio, styles.name]}>This is Bio. </Text>
-        <Text style={[styles.anotheruser, styles.name]}>
-          https://anandkumar.vercel.app/
-        </Text>
+        {user?.link && (
+          <Pressable onPress={handleRedirect}>
+            <Text style={[styles.anotheruser, styles.name]}>{user?.link}</Text>
+          </Pressable>
+        )}
       </View>
 
       {/* buttons */}
       <View style={styles.thirdTab}>
-        <TouchableOpacity style={styles.button} onPress={() => router.push("/editProfile")}>
-          <Text style={{...styles.userName, fontSize: 14, color: 'white', fontWeight: 500}}>Edit Profile</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push("/editProfile")}
+        >
+          <Text
+            style={{
+              ...styles.userName,
+              fontSize: 14,
+              color: "white",
+              fontWeight: 500,
+            }}
+          >
+            Edit Profile
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -102,7 +142,7 @@ const UserData = () => {
       </View>
 
       {/* Post and reels */}
-      <View style={{...styles.postContainer}}>
+      <View style={{ ...styles.postContainer }}>
         <Post />
         <Post />
         <Post />

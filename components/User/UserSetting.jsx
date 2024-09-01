@@ -1,10 +1,26 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { withTiming } from "react-native-reanimated";
+
 const UserSetting = ({ height }) => {
+
+
   const handlePress = () => {
     height.value = withTiming(0);
+  };
+
+  const logoutHandler = async () => {
+    try {
+      await AsyncStorage.removeItem('token')
+      await AsyncStorage.removeItem('user-insta')
+      console.log('Data removed')
+      router.push('/login')
+  }
+  catch(exception) {
+      console.log(exception)
+  }
   };
   return (
     <Animated.View style={{ ...styles.cont, height }}>
@@ -35,7 +51,7 @@ const UserSetting = ({ height }) => {
         <TouchableOpacity style={styles.option}>
           <Text style={{ fontWeight: 500 }}>About</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
+        <TouchableOpacity style={styles.option} onPress={logoutHandler}>
           <Text style={{ fontWeight: 500, color: "red" }}>Logout</Text>
         </TouchableOpacity>
       </View>

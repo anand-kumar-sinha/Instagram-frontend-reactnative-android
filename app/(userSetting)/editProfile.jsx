@@ -23,7 +23,6 @@ const editProfile = () => {
       <View style={{ marginTop: 20, alignItems: "center" }}>
         <TextInput placeholder="Name" style={styles.input}></TextInput>
         <TextInput placeholder="username" style={styles.input}></TextInput>
-        <TextInput placeholder="Dob" style={styles.input}></TextInput>
         <TextInput placeholder="Tag a person" style={styles.input}></TextInput>
         <TextInput placeholder="Link" style={styles.input}></TextInput>
         <TextInput placeholder="Bio" style={styles.input}></TextInput>

@@ -3,6 +3,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { withSpring, withTiming } from "react-native-reanimated";
 import AddPost from "../../assets/icons/AddPost";
 import Menu from "../../assets/icons/Menu";
+import { useRecoilValue } from "recoil";
+import userAtom from "../../atoms/userAtom";
 const UserHeader = ({ height }) => {
   const handlePress = () => {
     if (height.value > 0) {
@@ -11,9 +13,11 @@ const UserHeader = ({ height }) => {
     }
     height.value = withSpring(height.value + 500);
   };
+
+  const user = useRecoilValue(userAtom)
   return (
     <View style={styles.headerCont}>
-      <Text style={styles.logoName}>anand</Text>
+      <Text style={styles.logoName}>{user?.username}</Text>
       <View style={styles.headerIcon}>
         <AddPost height={25} width={25} color={"#000000"} />
         <TouchableOpacity onPress={handlePress}>

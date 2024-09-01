@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
+import React, { useEffect } from "react";
+import { router, Tabs } from "expo-router";
 import User from "../../components/User";
 import Home from "../../assets/icons/Home";
 import HomeSelect from "../../assets/icons/HomeSelect";
@@ -10,6 +10,7 @@ import AddPost from "../../assets/icons/AddPost";
 import Reels from "../../assets/icons/Reels";
 
 const _layout = () => {
+
   return (
     <Tabs
       screenOptions={{
@@ -24,7 +25,7 @@ const _layout = () => {
     >
       {/* Home screen */}
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           headerShown: false,
           tabBarLabel: "Home",
