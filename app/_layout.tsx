@@ -6,12 +6,12 @@ import { RecoilRoot } from "recoil";
 const _layout = () => {
   return (
     <RecoilRoot>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(userSetting)" options={{ headerShown: false }} />
-      </Stack>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(userSetting)" options={{ headerShown: false }} />
+        </Stack>
     </RecoilRoot>
   );
 };

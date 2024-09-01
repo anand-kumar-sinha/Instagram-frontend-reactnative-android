@@ -10,8 +10,10 @@ import {
 import React, { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import InstaLogo from "../../assets/icons/InstaLogo";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import userAtom from "../../atoms/userAtom";
+import Alert from "../../components/Alert";
+import axios from "axios";
 
 const signup = () => {
   const [email, setEmail] = useState("");
@@ -19,11 +21,20 @@ const signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [message, setMesage] = useState("");
   const windowHeight = Dimensions.get("window").height;
 
-  const signupHandler = async () =>{
+  const signupHandler = async () => {
     try {
+      if (!email || !username || !name || !password) {
+        setMesage('Please Enter All Details')
+        setAlert(true)
+        return;
+      }
       setLoading(true);
+
+      console.log(name, email, password, username)
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -33,22 +44,28 @@ const signup = () => {
         sameSite: "None",
       };
 
-      const { data } = await axios.get(
+      const { data } = await axios.post(
         "https://instagrambackend-one.vercel.app/api/v1/users/register",
-        { email, username, name, password },
+        { name, email, password, username},
         config
       );
       if (data) {
-        console.log(data, 'first data')
         router.push("/login");
         setLoading(false);
       }
     } catch (error) {
-      console.log(error, 'second');
-      alert('Invalid user credentials')
+      console.log(error)
+      setMesage("User Registration Failed or Already Exists")
+      setAlert(true)
       setLoading(false);
     }
-  }
+  };
+
+  const hideAlertHandler = () => {
+    setAlert(false);
+    setMesage("");
+  };
+
   return (
     <View
       style={{
@@ -58,6 +75,11 @@ const signup = () => {
         alignItems: "center",
       }}
     >
+      <Alert
+        alert={alert}
+        hideAlertHandler={hideAlertHandler}
+        message={message}
+      />
       <InstaLogo />
       <View style={{ width: "100%", padding: 20 }}>
         <TextInput
@@ -89,7 +111,7 @@ const signup = () => {
           value={password}
           onChangeText={(value) => setPassword(value)}
         />
-        <Pressable style={styles.btn}>
+        <Pressable style={styles.btn} onPress={signupHandler}>
           <Text style={styles.btnText}>
             {loading ? <ActivityIndicator color="#ffffff" /> : "Signup"}
           </Text>

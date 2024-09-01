@@ -14,23 +14,28 @@ import { Link, router } from "expo-router";
 import axios from "axios";
 import userAtom from "../../atoms/userAtom";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Alert from "../../components/Alert";
 
 const login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [message, setMesage] = useState("");
   const [user, setUser] = useRecoilState(userAtom);
   const windowHeight = Dimensions.get("window").height;
 
   const loginHandler = async () => {
     try {
-      if(!username || !password){
-        alert('Please enter username or password')
+      if (!username || !password) {
+        setMesage("Please Enter All Details");
+        setAlert(true);
         return;
       }
 
-      if(username.indexOf('@') !== -1){
-        alert('Invalid username format')
+      if (username.indexOf("@") !== -1) {
+        setMesage("Invalid username format");
+        setAlert(true);
         return;
       }
       setLoading(true);
@@ -60,9 +65,15 @@ const login = () => {
       }
     } catch (error) {
       console.log(error);
-      alert('Invalid credentials')
+      setMesage("Invalid credentials");
+      setAlert(true);
       setLoading(false);
     }
+  };
+
+  const hideAlertHandler = () => {
+    setAlert(false);
+    setMesage("");
   };
 
   return (
@@ -74,6 +85,11 @@ const login = () => {
         alignItems: "center",
       }}
     >
+      <Alert
+        alert={alert}
+        hideAlertHandler={hideAlertHandler}
+        message={message}
+      />
       <InstaLogo />
       <View style={{ width: "100%", padding: 20 }}>
         <TextInput

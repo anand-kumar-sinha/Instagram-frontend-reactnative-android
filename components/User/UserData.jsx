@@ -42,7 +42,6 @@ const UserData = () => {
   return (
     <ScrollView style={styles.Maincont}>
       {/* image and followers */}
-      {console.log(user)}
       <View style={styles.firstTab}>
         <AddStatus />
         <View style={styles.dataCont}>
