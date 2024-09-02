@@ -21,6 +21,7 @@ const _layout = () => {
           backgroundColor: "white",
           height: 60,
         },
+        tabBarHideOnKeyboard: true
       }}
     >
       {/* Home screen */}

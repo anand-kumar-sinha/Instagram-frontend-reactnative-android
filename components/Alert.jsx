@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import AwesomeAlert from "react-native-awesome-alerts";
 
-const Alert = ({ alert, hideAlertHandler, message, loading, tittle = 'Alert !', setAlert }) => {
+const Alert = ({ alert, hideAlertHandler, message, tittle = 'Alert !', }) => {
 
   return (
     <AwesomeAlert

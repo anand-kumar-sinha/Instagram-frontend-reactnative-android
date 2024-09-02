@@ -87,7 +87,6 @@ const login = () => {
     >
       <Alert
         alert={alert}
-        setAlert={setAlert}
         hideAlertHandler={hideAlertHandler}
         message={message}
         loading={false}

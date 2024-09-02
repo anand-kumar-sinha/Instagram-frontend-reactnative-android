@@ -128,8 +128,6 @@ const editProfile = () => {
   return (
     <ScrollView style={{ padding: 20, flex: 1 }}>
       <Alert
-        setAlert={setAlert}
-        loading={true}
         message={`${progress.toString()}%`}
         hideAlertHandler={hideAlertHandler}
         alert={alert}
@@ -155,7 +153,7 @@ const editProfile = () => {
         <TextInput
           placeholder="username"
           style={{ ...styles.input, color: "gray" }}
-          value={username}
+          value={`@${username}`}
           editable={false}
         ></TextInput>
         <TextInput

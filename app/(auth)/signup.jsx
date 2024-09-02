@@ -28,13 +28,13 @@ const signup = () => {
   const signupHandler = async () => {
     try {
       if (!email || !username || !name || !password) {
-        setMesage('Please Enter All Details')
-        setAlert(true)
+        setMesage("Please Enter All Details");
+        setAlert(true);
         return;
       }
       setLoading(true);
 
-      console.log(name, email, password, username)
+      console.log(name, email, password, username);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const signup = () => {
 
       const { data } = await axios.post(
         "https://instagrambackend-one.vercel.app/api/v1/users/register",
-        { name, email, password, username},
+        { name, email, password, username },
         config
       );
       if (data) {
@@ -54,9 +54,9 @@ const signup = () => {
         setLoading(false);
       }
     } catch (error) {
-      console.log(error)
-      setMesage("User Registration Failed or Already Exists")
-      setAlert(true)
+      console.log(error);
+      setMesage("User Registration Failed or Already Exists");
+      setAlert(true);
       setLoading(false);
     }
   };
@@ -77,7 +77,6 @@ const signup = () => {
     >
       <Alert
         alert={alert}
-        setAlert={setAlert}
         hideAlertHandler={hideAlertHandler}
         message={message}
         loading={false}
