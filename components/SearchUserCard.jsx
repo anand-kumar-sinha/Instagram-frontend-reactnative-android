@@ -2,12 +2,18 @@ import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import React, { useState } from "react";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import searchuserAtom from "../atoms/searchuserAtom";
+import userAtom from "../atoms/userAtom";
 
 const SearchUserCard = ({ user }) => {
   const [searchuser, setSearchUser] = useRecoilState(searchuserAtom);
+  const loginuser = useRecoilValue(userAtom);
   const pressHandler = async () => {
+    if (loginuser?._id === user?._id) {
+      router.push("/profile");
+      return;
+    }
     setSearchUser(user);
     router.push("/searchuserprofile");
   };
