@@ -5,13 +5,16 @@ import Post from "../../components/Post";
 import StatusBar from "../../components/StatusBar";
 import AddStatus from "../../components/AddStatus";
 import { router } from "expo-router";
+import { useRecoilValue } from "recoil";
+import userAtom from "../../atoms/userAtom";
 
 const home = () => {
+  const user = useRecoilValue(userAtom);
   return (
     <ScrollView style={{ paddingTop: 15 }}>
       <TopHeader />
       <ScrollView horizontal={true} style={styles.ScrollViewStyle}>
-        <AddStatus />
+        <AddStatus imgUrl={user?.avatar} id={user?._id} />
         <StatusBar />
         <StatusBar />
         <StatusBar />

@@ -14,22 +14,23 @@ import Greed from "../../assets/icons/Greed";
 import Reels from "../../assets/icons/Reels";
 import AddStatus from "../AddStatus";
 import StatusBar from "../StatusBar";
-import Post from "./Post";
+import Post from "../User/Post";
 import { router } from "expo-router";
 import { useRecoilValue } from "recoil";
 import userAtom from "../../atoms/userAtom";
+import searchuserAtom from "../../atoms/searchuserAtom";
 
 const UserData = () => {
   const [slider, setSlider] = useState("posts");
-  const user = useRecoilValue(userAtom);
+  const searchuser = useRecoilValue(searchuserAtom);
 
-  const date = new Date(user?.createdAt);
+  const date = new Date(searchuser?.createdAt);
 
   const formateMonth = date.toDateString().split(" ")[1];
   const formateYear = date.toDateString().split(" ")[3];
 
   const handleRedirect = async () => {
-    const url = user?.link;
+    const url = searchuser?.link;
 
     const supported = await Linking.canOpenURL(url);
     if (supported) {
@@ -43,7 +44,7 @@ const UserData = () => {
     <ScrollView style={styles.Maincont}>
       {/* image and followers */}
       <View style={styles.firstTab}>
-        <AddStatus imgUrl={user?.avatar} id={user?._id} />
+        <AddStatus imgUrl={searchuser?.avatar} id={searchuser?._id}  />
         <View style={styles.dataCont}>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Text style={styles.data}>14</Text>
@@ -62,12 +63,12 @@ const UserData = () => {
 
       {/* name and bio */}
       <View style={styles.secondTab}>
-        <Text style={[styles.name, styles.userName]}>{user?.name}</Text>
-        {user?.taged && (
-          <Text style={[styles.anotheruser, styles.name]}>@{user?.taged}</Text>
+        <Text style={[styles.name, styles.userName]}>{searchuser?.name}</Text>
+        {searchuser?.taged && (
+          <Text style={[styles.anotheruser, styles.name]}>@{searchuser?.taged}</Text>
         )}
-        {user?.bio && (
-          <Text style={[styles.bio, styles.name]}>{user?.bio} </Text>
+        {searchuser?.bio && (
+          <Text style={[styles.bio, styles.name]}>{searchuser?.bio} </Text>
         )}
         <Text style={[styles.bio, styles.name]}>
           <MaterialCommunityIcons
@@ -77,9 +78,9 @@ const UserData = () => {
           />{" "}
           {formateMonth} {formateYear}
         </Text>
-        {user?.link && (
+        {searchuser?.link && (
           <Pressable onPress={handleRedirect}>
-            <Text style={[styles.anotheruser, styles.name]}>{user?.link}</Text>
+            <Text style={[styles.anotheruser, styles.name]}>{searchuser?.link}</Text>
           </Pressable>
         )}
       </View>
@@ -98,7 +99,7 @@ const UserData = () => {
               fontWeight: 500,
             }}
           >
-            Edit Profile
+            Follow
           </Text>
         </TouchableOpacity>
       </View>
@@ -111,7 +112,6 @@ const UserData = () => {
         <StatusBar />
         <StatusBar />
         <StatusBar />
-        <AddStatus imgUrl={user?.avatar} id={user?._id} />
       </ScrollView>
 
       {/*  post reels slider*/}

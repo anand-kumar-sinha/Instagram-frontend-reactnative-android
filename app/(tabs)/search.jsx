@@ -57,6 +57,7 @@ const search = () => {
       console.log(error);
     }
   };
+  
   return (
     <View style={{ paddingTop: 45, flex: 1, height: 1000 }}>
       <View style={{ padding: 10 }}>
@@ -74,8 +75,10 @@ const search = () => {
           ></TextInput>
         </TouchableOpacity>
         <ScrollView style={{ marginBottom: 35 }}>
-          {searchResult && searchResult.map((item, index) => <SearchUserCard key={index} user={item}/>)}
-
+          {searchResult &&
+            searchResult.map((item, index) => (
+              <SearchUserCard key={index} user={item} />
+            ))}
         </ScrollView>
       </View>
     </View>
