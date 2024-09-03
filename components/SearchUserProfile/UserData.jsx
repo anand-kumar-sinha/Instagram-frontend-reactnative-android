@@ -20,7 +20,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../../atoms/userAtom";
 import searchuserAtom from "../../atoms/searchuserAtom";
 
-const UserData = () => {
+const UserData = ({user}) => {
   const [slider, setSlider] = useState("posts");
   const searchuser = useRecoilValue(searchuserAtom);
 
@@ -142,17 +142,9 @@ const UserData = () => {
 
       {/* Post and reels */}
       <View style={{ ...styles.postContainer }}>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {
+          searchuser && searchuser?.posts.map((post, index) => <Post key={index} post={post}/>)
+        }
       </View>
     </ScrollView>
   );

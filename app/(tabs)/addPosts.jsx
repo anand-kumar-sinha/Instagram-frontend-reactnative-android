@@ -1,25 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  Button,
-  Image,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  ScrollView,
-  TextInput,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import { Video } from "expo-av";
-import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Alert from "../../components/Alert";
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../../firebase";
-import { useRecoilValue } from "recoil";
-import userAtom from "../../atoms/userAtom";
 import axios from "axios";
+import { Video } from "expo-av";
+import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import React, { useRef, useState } from "react";
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from "react-native";
+import { useRecoilState, useRecoilValue } from "recoil";
+import userAtom from "../../atoms/userAtom";
+import Alert from "../../components/Alert";
+import { storage } from "../../firebase";
+import refreshAtom from "../../atoms/refreshAtom";
 
 const addPosts = () => {
   const [postContent, setPostContent] = useState();
@@ -32,6 +32,7 @@ const addPosts = () => {
   const video = useRef(null);
   const router = useRouter();
   const user = useRecoilValue(userAtom)
+  const [refresh, setRefresh] = useRecoilState(refreshAtom)
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
 
@@ -48,7 +49,7 @@ const addPosts = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       quality: 0.4,
-      aspect: [4, 3],
+      aspect: [4, 4],
     });
 
     if (!result.canceled) {
@@ -64,7 +65,14 @@ const addPosts = () => {
 
   const postHandler = async () => {
     try {
+      if(!postContent){
+        setAlert(true)
+        setProgress("Please Select Media")
+        setMessage("Alert !")
+        return;
+      }
       setLoading(true);
+      setMessage("Uploading...")
       if (postContent) {
         setAlert(true);
         const response = await fetch(postContent);
@@ -93,9 +101,7 @@ const addPosts = () => {
             });
           }
         );
-      } else {
-        dataSender();
-      }
+      } 
     } catch (error) {
       console.log(error)
       setMessage(error);
@@ -128,8 +134,10 @@ const addPosts = () => {
         );
 
         if (data) {
-          console.log(data);
           setLoading(false);
+          setDesc('')
+          setPostContent('')
+          setRefresh(!refresh)
         }
       } else {
         router.push("/login");
@@ -166,7 +174,7 @@ const addPosts = () => {
           message={`${progress.toString()}%`}
           hideAlertHandler={hideAlertHandler}
           alert={alert}
-          tittle="Uploading..."
+          tittle={message}
         />
         {postContent ? (
           contentType == "video" ? (

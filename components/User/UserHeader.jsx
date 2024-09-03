@@ -5,16 +5,18 @@ import AddPost from "../../assets/icons/AddPost";
 import Menu from "../../assets/icons/Menu";
 import { useRecoilValue } from "recoil";
 import userAtom from "../../atoms/userAtom";
-const UserHeader = ({ height }) => {
+const UserHeader = ({ height, option, setOption }) => {
   const handlePress = () => {
     if (height.value > 0) {
       height.value = withTiming(0);
+      setOption(false);
       return;
     }
-    height.value = withSpring(height.value + 500);
+    height.value = withSpring(height.value + 300);
+    setOption(true);
   };
 
-  const user = useRecoilValue(userAtom)
+  const user = useRecoilValue(userAtom);
   return (
     <View style={styles.headerCont}>
       <Text style={styles.logoName}>{user?.username}</Text>
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: "100%",
     zIndex: 100,
-    marginTop: 10
+    marginTop: 10,
   },
   logoName: {
     fontSize: 24,

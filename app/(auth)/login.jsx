@@ -1,19 +1,19 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { Link, router } from "expo-router";
+import React, { useState } from "react";
 import {
+  ActivityIndicator,
+  Dimensions,
+  Pressable,
   StyleSheet,
   Text,
-  View,
-  Dimensions,
   TextInput,
-  Pressable,
-  ActivityIndicator,
+  View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import InstaLogo from "../../assets/icons/InstaLogo";
-import { Link, router } from "expo-router";
-import axios from "axios";
 import userAtom from "../../atoms/userAtom";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Alert from "../../components/Alert";
 
 const login = () => {

@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Linking,
   Pressable,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Greed from "../../assets/icons/Greed";
 import Reels from "../../assets/icons/Reels";
@@ -16,13 +17,19 @@ import AddStatus from "../AddStatus";
 import StatusBar from "../StatusBar";
 import Post from "./Post";
 import { router } from "expo-router";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../../atoms/userAtom";
+import userpostAtom from "../../atoms/userpostAtom";
+import axios from "axios";
+import refreshAtom from "../../atoms/refreshAtom";
 
 const UserData = () => {
   const [slider, setSlider] = useState("posts");
-  const user = useRecoilValue(userAtom);
+  const [userPosts, setUserPosts] = useRecoilState(userpostAtom);
+  const refresh = useRecoilValue(refreshAtom)
+  const [loading, setLoading] = useState(true);
 
+  const user = useRecoilValue(userAtom);
   const date = new Date(user?.createdAt);
 
   const formateMonth = date.toDateString().split(" ")[1];
@@ -36,6 +43,37 @@ const UserData = () => {
       await Linking.openURL(url);
     } else {
       Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
+
+  useEffect(() =>{
+    fetchPosts()
+  },[refresh])
+
+  const fetchPosts = async () => {
+    console.log(user?._id)
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        withCredentials: true,
+        sameSite: "None",
+      };
+
+      const { data } = await axios.get(
+        `https://instagrambackend-one.vercel.app/api/v1/users/findposts/${user?._id}`,
+        config
+      );
+
+      if(data){
+        setUserPosts(data?.posts)
+        setLoading(false)
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -141,18 +179,15 @@ const UserData = () => {
       </View>
 
       {/* Post and reels */}
+      {
+        loading && <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator color="#000" size={30} />
+        </View>
+      }
       <View style={{ ...styles.postContainer }}>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {userPosts?.map((post, index) => (
+          <Post key={index} post={post} />
+        ))}
       </View>
     </ScrollView>
   );

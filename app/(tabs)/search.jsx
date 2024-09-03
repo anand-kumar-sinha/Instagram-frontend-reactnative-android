@@ -50,7 +50,6 @@ const search = () => {
       );
 
       if (data) {
-        console.log(data?.user);
         setSearchResult(data?.user);
       }
     } catch (error) {

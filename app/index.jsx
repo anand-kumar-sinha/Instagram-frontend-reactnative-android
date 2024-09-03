@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { router, useRootNavigationState } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useRecoilState } from "recoil";
-import userAtom from "../atoms/userAtom";
-import axios from "axios";
 import FlashLogo from "../assets/icons/FlashLogo";
+import userAtom from "../atoms/userAtom";
 
 const index = () => {
   const [ren, setRen] = useState(false);

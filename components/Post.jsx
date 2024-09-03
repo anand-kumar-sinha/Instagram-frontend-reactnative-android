@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
-import React from "react";
 import {
-  SimpleLineIcons,
   AntDesign,
   FontAwesome6,
   Ionicons,
+  SimpleLineIcons,
 } from "@expo/vector-icons";
+import React from "react";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 
 const Post = () => {
   const width = Dimensions.get("window").width;

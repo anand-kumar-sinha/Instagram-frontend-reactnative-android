@@ -60,10 +60,10 @@ const editProfile = () => {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            const progress = Math.round(
+            const upload = Math.round(
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100
             );
-            setProgress(progress);
+            setProgress(upload);
           },
           (error) => {
             alert(error);
@@ -128,7 +128,7 @@ const editProfile = () => {
   return (
     <ScrollView style={{ padding: 20, flex: 1 }}>
       <Alert
-        message={`${progress.toString()}%`}
+        message={`${progress?.toString()}%`}
         hideAlertHandler={hideAlertHandler}
         alert={alert}
         tittle="Uploading..."
@@ -180,7 +180,7 @@ const editProfile = () => {
           keyboardType="numeric"
           textContentType="telephoneNumber"
           onChangeText={(value) => setMobile(value)}
-          value={mobile.toString()}
+          value={mobile?.toString()}
         ></TextInput>
         <TextInput
           placeholder="Gender"
