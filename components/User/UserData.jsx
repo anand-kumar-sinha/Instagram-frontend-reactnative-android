@@ -51,7 +51,6 @@ const UserData = () => {
   },[refresh])
 
   const fetchPosts = async () => {
-    console.log(user?._id)
     try {
       setLoading(true);
       const config = {

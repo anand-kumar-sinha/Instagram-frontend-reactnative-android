@@ -27,13 +27,13 @@ export default AddStatus;
 
 const styles = StyleSheet.create({
   img: {
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
     borderRadius: 100,
   },
   imgCont: {
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
     position: "relative",
     // marginHorizontal: 5,
   },

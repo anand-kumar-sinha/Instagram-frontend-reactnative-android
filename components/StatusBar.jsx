@@ -19,7 +19,7 @@ const StatusBar = () => {
     >
       <View
         style={{
-          width: 80,
+          width: 70,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -40,7 +40,7 @@ const StatusBar = () => {
 export default StatusBar;
 
 const styles = StyleSheet.create({
-  Img: { width: 60, height: 60, borderRadius: 100 },
+  Img: { width: 50, height: 50, borderRadius: 100 },
   Name: { fontWeight: "bold" },
   ImgCont: {
     borderColor: "red",

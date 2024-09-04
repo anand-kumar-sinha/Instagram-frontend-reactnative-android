@@ -13,13 +13,14 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../../atoms/userAtom";
 import Alert from "../../components/Alert";
 import { storage } from "../../firebase";
 import refreshAtom from "../../atoms/refreshAtom";
+import allpostsAtom from "../../atoms/allpostsAtom";
 
 const addPosts = () => {
   const [postContent, setPostContent] = useState();
@@ -31,8 +32,9 @@ const addPosts = () => {
   const [desc, setDesc] = useState("");
   const video = useRef(null);
   const router = useRouter();
-  const user = useRecoilValue(userAtom)
-  const [refresh, setRefresh] = useRecoilState(refreshAtom)
+  const user = useRecoilValue(userAtom);
+  const [posts, setPosts] = useRecoilState(allpostsAtom);
+  const [refresh, setRefresh] = useRecoilState(refreshAtom);
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
 
@@ -65,14 +67,14 @@ const addPosts = () => {
 
   const postHandler = async () => {
     try {
-      if(!postContent){
-        setAlert(true)
-        setProgress("Please Select Media")
-        setMessage("Alert !")
+      if (!postContent) {
+        setAlert(true);
+        setProgress("Please Select Media");
+        setMessage("Alert !");
         return;
       }
       setLoading(true);
-      setMessage("Uploading...")
+      setMessage("Uploading...");
       if (postContent) {
         setAlert(true);
         const response = await fetch(postContent);
@@ -91,7 +93,7 @@ const addPosts = () => {
             setProgress(progress);
           },
           (error) => {
-            console.log(error)
+            console.log(error);
             setMessage(error);
             setLoading(false);
           },
@@ -101,9 +103,9 @@ const addPosts = () => {
             });
           }
         );
-      } 
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setMessage(error);
       setLoading(false);
     }
@@ -135,9 +137,12 @@ const addPosts = () => {
 
         if (data) {
           setLoading(false);
-          setDesc('')
-          setPostContent('')
-          setRefresh(!refresh)
+          setDesc("");
+          setPostContent("");
+          console.log(data);
+          setPosts([data?.post, ...posts]);
+          setRefresh(!refresh);
+          router.push("/home");
         }
       } else {
         router.push("/login");

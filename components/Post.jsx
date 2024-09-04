@@ -4,11 +4,21 @@ import {
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import React from "react";
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { Video } from "expo-av";
 
-const Post = () => {
+const Post = ({ post, autoPlay, index }) => {
   const width = Dimensions.get("window").width;
+  const video = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   return (
     <View style={styles.PostContainer}>
@@ -23,23 +33,47 @@ const Post = () => {
         >
           <Image
             source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/leafy-beach-388109.appspot.com/o/posts%2F65f7128f9411aee2f29a52a9%2F6?alt=media&token=1be2f019-6c72-45bd-bceb-deef3b100bec",
+              uri: post?.admin?.avatar,
             }}
             style={styles.UserImg}
           />
-          <Text style={styles.userName}>anand</Text>
+          <Text style={styles.userName}>{post?.admin?.name}</Text>
         </View>
         <SimpleLineIcons name="options-vertical" size={18} color="black" />
       </View>
 
       {/* post image */}
       <View style={styles.PostImage}>
-        <Image
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/leafy-beach-388109.appspot.com/o/posts%2F65f7128f9411aee2f29a52a9%2F6?alt=media&token=1be2f019-6c72-45bd-bceb-deef3b100bec",
-          }}
-          style={styles.Img}
-        />
+        {loading && (
+          <View style={{ height: "100%", width: '100%' }}>
+            <ActivityIndicator color="#000000" size={30} /> 
+          </View>
+        )}
+        {post?.postType === "video" ? (
+          <Video
+            ref={video}
+            source={{
+              uri: post?.postUrl,
+            }}
+            style={styles.Img}
+            isLooping
+            resizeMode="cover"
+            repeat={true}
+            shouldPlay={index === autoPlay}
+            isMuted={false}
+            onLoadStart={() => setLoading(true)}
+            onLoad={() => setLoading(false)}
+          />
+        ) : (
+          <Image
+            source={{
+              uri: post?.postUrl,
+            }}
+            onLoadStart={() => setLoading(true)}
+            onLoad={() => setLoading(false)}
+            style={styles.Img}
+          />
+        )}
       </View>
 
       {/* icons for the like etc... */}
@@ -98,10 +132,10 @@ const styles = StyleSheet.create({
   PostContainer: {
     backgroundColor: "#F5F5F5",
     elevation: 5,
-    marginHorizontal: 5,
     borderRadius: 10,
     padding: 5,
-    marginBottom: 20,
+    marginBottom: 10,
+    marginTop: 10,
   },
   PostHeader: {
     justifyContent: "space-between",
@@ -116,6 +150,7 @@ const styles = StyleSheet.create({
     height: 500,
     alignItems: "center",
     marginTop: 5,
+    justifyContent: "center",
   },
   Bottom: {
     flexDirection: "row",
