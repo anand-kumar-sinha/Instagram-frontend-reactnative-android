@@ -30,6 +30,7 @@ const addPosts = () => {
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState();
   const [desc, setDesc] = useState("");
+  const [error, setError] = useState("");
   const video = useRef(null);
   const router = useRouter();
   const user = useRecoilValue(userAtom);
@@ -53,6 +54,12 @@ const addPosts = () => {
       quality: 0.4,
       aspect: [4, 4],
     });
+
+    if (result.assets[0].fileSize > 12000000) {
+      setError("File size is too large");
+      setAlert(true);
+      return;
+    }
 
     if (!result.canceled) {
       setPostContent(result.assets[0].uri);
@@ -155,6 +162,7 @@ const addPosts = () => {
 
   const hideAlertHandler = () => {
     setAlert(false);
+    setError("");
   };
 
   return (
@@ -176,7 +184,7 @@ const addPosts = () => {
         }}
       >
         <Alert
-          message={`${progress.toString()}%`}
+          message={progress ? `${progress.toString()}%` : error}
           hideAlertHandler={hideAlertHandler}
           alert={alert}
           tittle={message}
