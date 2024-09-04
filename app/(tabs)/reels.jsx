@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,6 +10,7 @@ import { Video } from "expo-av";
 import { Feather, FontAwesome, SimpleLineIcons } from "@expo/vector-icons";
 import Carousel from "react-native-reanimated-carousel";
 import ReelsCard from "../../components/ReelsCard";
+import { useIsFocused } from "@react-navigation/native";
 
 const Reels = () => {
   const data = [
@@ -19,6 +20,18 @@ const Reels = () => {
   ];
 
   const [active, setActive] = useState(0)
+  const [live, setLive] = useState(false)
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      setLive(true)
+    } else{
+      setLive(false)
+    }
+  }, [isFocused]);
+
 
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
@@ -37,7 +50,7 @@ const Reels = () => {
           scrollAnimationDuration={1000}
           onSnapToItem={(index) => setActive(index)}
           renderItem={({ index, item }) => (
-            <ReelsCard key={index} item={item} active={index === active} setActive={setActive}/>
+            <ReelsCard key={index} item={item} active={index === active && live} setActive={setActive}/>
           )}
           pagingEnabled={true}
           loop={false}
