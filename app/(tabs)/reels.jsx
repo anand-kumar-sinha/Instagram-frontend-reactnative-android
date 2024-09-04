@@ -18,35 +18,7 @@ const Reels = () => {
     "https://firebasestorage.googleapis.com/v0/b/leafy-beach-388109.appspot.com/o/status%2F65f7b588959fe75c3c04d81d?alt=media&token=0d9017cb-2c03-4aed-8376-a50578acb7c1",
   ];
 
-  const renderVideos = ({ item }) => (
-    <View style={styles.container}>
-      <Video
-        ref={video}
-        source={{
-          uri: "https://firebasestorage.googleapis.com/v0/b/leafy-beach-388109.appspot.com/o/status%2F65f7b588959fe75c3c04d81d?alt=media&token=0d9017cb-2c03-4aed-8376-a50578acb7c1",
-        }}
-        style={styles.video}
-        isLooping
-        resizeMode="cover"
-        repeat={true}
-        shouldPlay={!paused}
-      />
-      <TouchableOpacity onPress={handlePlayPause} style={styles.play}>
-        <Feather name={paused ? "pause" : "play"} size={24} color="black" />
-      </TouchableOpacity>
-      <View style={styles.optionCont}>
-        <TouchableOpacity style={styles.iconStyle}>
-          <Feather name="heart" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconStyle}>
-          <FontAwesome name="comment-o" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconStyle}>
-          <SimpleLineIcons name="options-vertical" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  const [active, setActive] = useState(0)
 
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
@@ -63,10 +35,12 @@ const Reels = () => {
           height={height - 100}
           data={data}
           scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log("current index:", index)}
+          onSnapToItem={(index) => setActive(index)}
           renderItem={({ index, item }) => (
-            <ReelsCard key={index} item={item} />
+            <ReelsCard key={index} item={item} active={index === active} setActive={setActive}/>
           )}
+          pagingEnabled={true}
+          loop={false}
         />
       </View>
     </>

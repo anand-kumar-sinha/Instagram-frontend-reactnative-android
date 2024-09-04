@@ -15,13 +15,25 @@ import Post from "../../components/Post";
 import StatusBar from "../../components/StatusBar";
 import TopHeader from "../../components/TopHeader";
 import allpostsAtom from "../../atoms/allpostsAtom";
+import { useIsFocused } from "@react-navigation/native";
 
 const home = () => {
   const [loading, setLoading] = useState(false);
+  const [active, setActive] = useState(false);
   const [posts, setPosts] = useRecoilState(allpostsAtom);
   const [autoPlay, setAutoPlay] = useState(false);
   const user = useRecoilValue(userAtom);
   const [index, setIndex] = useState(1);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      setActive(true)
+    } else{
+      setActive(false)
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     fetchPosts();
@@ -83,7 +95,7 @@ const home = () => {
           data={posts}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => (
-            <Post post={item} index={index} autoPlay={autoPlay} />
+            <Post post={item} index={index} autoPlay={active && autoPlay} />
           )}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
@@ -92,7 +104,14 @@ const home = () => {
         />
       )}
       {loading && (
-        <View style={{ position: "absolute", bottom: 10, width: "100%", height: 40 }}>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 10,
+            width: "100%",
+            height: 40,
+          }}
+        >
           <ActivityIndicator color="#000000" size={40} />
         </View>
       )}

@@ -4,7 +4,7 @@ import { Video } from "expo-av";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -21,9 +21,11 @@ import Alert from "../../components/Alert";
 import { storage } from "../../firebase";
 import refreshAtom from "../../atoms/refreshAtom";
 import allpostsAtom from "../../atoms/allpostsAtom";
+import { useIsFocused } from "@react-navigation/native";
 
 const addPosts = () => {
   const [postContent, setPostContent] = useState();
+  const [active, setActive] = useState(false);
   const [contentType, setContentType] = useState();
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -38,6 +40,16 @@ const addPosts = () => {
   const [refresh, setRefresh] = useRecoilState(refreshAtom);
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  }, [isFocused]);
 
   const openCamera = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -200,7 +212,7 @@ const addPosts = () => {
               isLooping
               resizeMode="cover"
               repeat={true}
-              shouldPlay={true}
+              shouldPlay={active}
             />
           ) : (
             <Image style={styles.Img} source={{ uri: postContent }} />

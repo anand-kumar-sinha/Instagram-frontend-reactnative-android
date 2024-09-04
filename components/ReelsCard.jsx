@@ -1,15 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
 import { Feather, FontAwesome, SimpleLineIcons } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
 
-const ReelsCard = ({ item }) => {
+const ReelsCard = ({ active, setActive, item }) => {
   const video = useRef(null);
 
-  const [paused, setPaused] = useState(false);
-
   const handlePlayPause = () => {
-    setPaused(!paused);
+    setActive(!active);
   };
   return (
     <View style={styles.container}>
@@ -22,11 +21,8 @@ const ReelsCard = ({ item }) => {
         isLooping
         resizeMode="cover"
         repeat={true}
-        shouldPlay={paused}
+        shouldPlay={active}
       />
-      <TouchableOpacity onPress={handlePlayPause} style={styles.play}>
-        <Feather name={paused ? "pause" : "play"} size={24} color="black" />
-      </TouchableOpacity>
       <View style={styles.optionCont}>
         <TouchableOpacity style={styles.iconStyle}>
           <Feather name="heart" size={24} color="black" />
