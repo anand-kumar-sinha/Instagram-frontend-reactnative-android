@@ -5,6 +5,7 @@ import AddPost from "../../assets/icons/AddPost";
 import Menu from "../../assets/icons/Menu";
 import { useRecoilValue } from "recoil";
 import userAtom from "../../atoms/userAtom";
+import { router } from "expo-router";
 const UserHeader = ({ height, option, setOption }) => {
   const handlePress = () => {
     if (height.value > 0) {
@@ -21,7 +22,10 @@ const UserHeader = ({ height, option, setOption }) => {
     <View style={styles.headerCont}>
       <Text style={styles.logoName}>{user?.username}</Text>
       <View style={styles.headerIcon}>
-        <AddPost height={25} width={25} color={"#000000"} />
+        <TouchableOpacity onPress={() => router.push('/addPosts')}>
+          <AddPost height={25} width={25} color={"#000000"} />
+        </TouchableOpacity>
+        
         <TouchableOpacity onPress={handlePress}>
           <Menu height={25} width={25} color={"#000000"} />
         </TouchableOpacity>

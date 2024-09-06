@@ -7,9 +7,6 @@ import { useIsFocused } from "@react-navigation/native";
 const ReelsCard = ({ active, setActive, item }) => {
   const video = useRef(null);
 
-  const handlePlayPause = () => {
-    setActive(!active);
-  };
   return (
     <View style={styles.container}>
       <Video

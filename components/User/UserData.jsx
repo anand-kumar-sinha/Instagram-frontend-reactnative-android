@@ -23,10 +23,10 @@ import userpostAtom from "../../atoms/userpostAtom";
 import axios from "axios";
 import refreshAtom from "../../atoms/refreshAtom";
 
-const UserData = () => {
+const UserData = ({setStatusCont}) => {
   const [slider, setSlider] = useState("posts");
   const [userPosts, setUserPosts] = useRecoilState(userpostAtom);
-  const refresh = useRecoilValue(refreshAtom)
+  const refresh = useRecoilValue(refreshAtom);
   const [loading, setLoading] = useState(true);
 
   const user = useRecoilValue(userAtom);
@@ -46,9 +46,9 @@ const UserData = () => {
     }
   };
 
-  useEffect(() =>{
-    fetchPosts()
-  },[refresh])
+  useEffect(() => {
+    fetchPosts();
+  }, [refresh]);
 
   const fetchPosts = async () => {
     try {
@@ -67,9 +67,9 @@ const UserData = () => {
         config
       );
 
-      if(data){
-        setUserPosts(data?.posts)
-        setLoading(false)
+      if (data) {
+        setUserPosts(data?.posts);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -80,7 +80,9 @@ const UserData = () => {
     <ScrollView style={styles.Maincont}>
       {/* image and followers */}
       <View style={styles.firstTab}>
-        <AddStatus imgUrl={user?.avatar} id={user?._id} />
+        <Pressable onPress={()=> setStatusCont(true)}>
+          <AddStatus imgUrl={user?.avatar} id={user?.status ? "" : user?._id} />
+        </Pressable>
         <View style={styles.dataCont}>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Text style={styles.data}>14</Text>
@@ -178,11 +180,11 @@ const UserData = () => {
       </View>
 
       {/* Post and reels */}
-      {
-        loading && <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      {loading && (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
           <ActivityIndicator color="#000" size={30} />
         </View>
-      }
+      )}
       <View style={{ ...styles.postContainer }}>
         {userPosts?.map((post, index) => (
           <Post key={index} post={post} />

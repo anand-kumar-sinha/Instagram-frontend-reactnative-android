@@ -1,16 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  Dimensions,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  Dimensions,
+  View
 } from "react-native";
-import { Video } from "expo-av";
-import { Feather, FontAwesome, SimpleLineIcons } from "@expo/vector-icons";
 import Carousel from "react-native-reanimated-carousel";
 import ReelsCard from "../../components/ReelsCard";
-import { useIsFocused } from "@react-navigation/native";
 
 const Reels = () => {
   const data = [

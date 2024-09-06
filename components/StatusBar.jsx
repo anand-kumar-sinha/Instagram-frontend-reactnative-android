@@ -6,10 +6,11 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useRef } from "react";
+import { Video } from "expo-av";
 
-const StatusBar = () => {
+const StatusBar = ({user}) => {
+  const video = useRef(null)
   return (
     <View
       style={{
@@ -25,13 +26,21 @@ const StatusBar = () => {
         }}
       >
         <View style={styles.ImgCont}>
-          <Image
-            source={{ uri: "https://reactjs.org/logo-og.png" }}
+        <Video
+            ref={video}
+            source={{
+              uri: user?.status,
+            }}
             style={styles.Img}
+            isLooping
+            resizeMode="cover"
+            repeat={true}
+            shouldPlay={false}
+            isMuted={true}
           />
         </View>
 
-        <Text style={styles.Name}>Name</Text>
+        <Text>{user?.name?.slice(0, 5)}</Text>
       </View>
     </View>
   );
@@ -41,7 +50,6 @@ export default StatusBar;
 
 const styles = StyleSheet.create({
   Img: { width: 50, height: 50, borderRadius: 100 },
-  Name: { fontWeight: "bold" },
   ImgCont: {
     borderColor: "red",
     borderWidth: 4,
