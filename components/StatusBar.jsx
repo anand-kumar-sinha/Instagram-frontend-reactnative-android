@@ -40,7 +40,7 @@ const StatusBar = ({user}) => {
           />
         </View>
 
-        <Text>{user?.name?.slice(0, 5)}</Text>
+        <Text style={{fontSize: 12, fontWeight: 400}}>{user?.name?.slice(0, 10)}</Text>
       </View>
     </View>
   );

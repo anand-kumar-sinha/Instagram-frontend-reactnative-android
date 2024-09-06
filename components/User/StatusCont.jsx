@@ -1,3 +1,5 @@
+import { Video } from "expo-av";
+import React, { useRef, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -6,12 +8,9 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { Video } from "expo-av";
 import Close from "../../assets/icons/Close";
-import { useIsFocused } from "@react-navigation/native";
 
-const StatusCont = ({ url, setStatusCont }) => {
+const StatusCont = ({ url, setStatusCont, active2 = "", setActive2 = "" }) => {
   const [active, setActive] = useState(true);
   const [loading, setLoading] = useState(false);
   const video = useRef(null);
@@ -31,10 +30,6 @@ const StatusCont = ({ url, setStatusCont }) => {
         zIndex: 10,
       }}
     >
-      {
-        console.log(url)
-        // console.log(active)
-      }
       <View
         style={{
           flexDirection: "row",
@@ -50,6 +45,9 @@ const StatusCont = ({ url, setStatusCont }) => {
           onPress={() => {
             setStatusCont(false);
             setActive(false);
+            if (active2 === false) {
+              setActive2(true);
+            }
           }}
         >
           <Close color="#ffffff" height={20} width={20} />

@@ -9,7 +9,7 @@ import {
   FlatList,
   Pressable,
   StyleSheet,
-  View
+  View,
 } from "react-native";
 import { useRecoilState } from "recoil";
 import allpostsAtom from "../../atoms/allpostsAtom";
@@ -21,6 +21,7 @@ import Post from "../../components/Post";
 import StatusBar from "../../components/StatusBar";
 import TopHeader from "../../components/TopHeader";
 import { storage } from "../../firebase";
+import StatusCont from "../../components/User/StatusCont";
 
 const home = () => {
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,8 @@ const home = () => {
   const [user, setUser] = useRecoilState(userAtom);
   const [userIndex, setUserIndex] = useState(1);
   const [userLoading, setUserLoading] = useState(false);
+  const [statusCont, setStatusCont] = useState(false);
+  const [statusUrl, setStatusUrl] = useState("");
 
   const isFocused = useIsFocused();
 
@@ -59,7 +62,6 @@ const home = () => {
 
   const fetchReels = async () => {
     try {
-      console.log("jd");
       setUserLoading(true);
       const config = {
         headers: {
@@ -89,7 +91,6 @@ const home = () => {
   };
 
   const fetchPosts = async () => {
-    console.log("j");
     try {
       const config = {
         headers: {
@@ -150,7 +151,6 @@ const home = () => {
 
   const postHandler = async (statusContent) => {
     try {
-      console.log(statusContent);
       if (!statusContent) {
         setAlert(true);
         setProgress("Please Select Media");
@@ -217,7 +217,6 @@ const home = () => {
 
         if (data) {
           setLoading(false);
-          console.log(data);
           setUser(data?.user);
         }
       } else {
@@ -236,6 +235,14 @@ const home = () => {
 
   return (
     <View style={{ paddingTop: 15, position: "relative", height: "100%" }}>
+      {statusCont && (
+        <StatusCont
+          url={statusUrl}
+          setStatusCont={setStatusCont}
+          active2={active}
+          setActive2={setActive}
+        />
+      )}
       <TopHeader />
       <Alert
         message={progress ? `${progress.toString()}%` : error}
@@ -254,7 +261,15 @@ const home = () => {
             data={users}
             keyExtractor={(item, index) => index}
             renderItem={({ item, index }) => (
-              <StatusBar user={item} index={index} />
+              <Pressable
+                onPress={() => {
+                  setStatusUrl(item?.status);
+                  setStatusCont(true);
+                  setActive(false);
+                }}
+              >
+                <StatusBar user={item} index={index} />
+              </Pressable>
             )}
             onEndReached={() => {
               if (userHasEnd) {
