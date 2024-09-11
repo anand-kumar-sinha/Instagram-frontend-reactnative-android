@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useRecoilState } from "recoil";
 import allpostsAtom from "../../atoms/allpostsAtom";
-import allusersAtom from "../../atoms/allUsersAtom";
+import allusersAtom from "../../atoms/allusersAtom";
 import userAtom from "../../atoms/userAtom";
 import AddStatus from "../../components/AddStatus";
 import Alert from "../../components/Alert";
@@ -54,6 +54,11 @@ const home = () => {
 
   useEffect(() => {
     fetchPosts();
+    const intervalId = setInterval(() => {
+      fetchPosts();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
   }, [index]);
 
   useEffect(() => {
@@ -234,7 +239,7 @@ const home = () => {
   };
 
   return (
-    <View style={{ paddingTop: 15, position: "relative", height: "100%" }}>
+    <View style={{ paddingTop: 20, position: "relative", height: "100%" }}>
       {statusCont && (
         <StatusCont
           url={statusUrl}

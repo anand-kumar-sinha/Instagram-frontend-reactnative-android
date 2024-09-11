@@ -14,7 +14,7 @@ const profile = () => {
   const [statusCont, setStatusCont] = useState(false);
   const user = useRecoilValue(userAtom);
   return (
-    <View style={{ paddingTop: 10 }}>
+    <View style={{ paddingTop: 30 }}>
       <UserHeader height={height} option={option} setOption={setOption} />
       <UserData setStatusCont={setStatusCont} />
       {statusCont && (
